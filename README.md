@@ -1,49 +1,35 @@
 # molfidget
 
-## Quick start
+> This library is a fork of https://github.com/longjie0723/molfidget.  
+> The main contributions of this project are:  
+> - Added a Python entry point so you can run it directly with Python, rather than using Poetry.  
+> - The original version always launched the GUI by default; I have added an option to make the GUI optional.
 
-### 実行環境
 
-* Ubuntu
-* もしくは Windows WSL2 
+### Requirements
 
-### 必要なツール
-
-```
-sudo apt install git libglut-dev python3-poetry
-```
-
-### コードを取得
+* Python 3.10 or higher
+* You can use conda to install Python 3.10: `conda install python=3.10`
+* Dependencies
 
 ```
-cd ~/
-git clone https://github.com/longjie0723/molfidget.git
+pip install scipy trimesh manifold3d "pyglet<2" pyyaml
 ```
-
-### パッケージをインストール
+### Usage
 
 ```
-cd ~/molfidget
-poetry install
+python run_molfidget.py --scale 10.0 --shaft-gap 0.2 pdb/thermosupermin.pdb
 ```
 
-### 実行
+### Parameters
 
-```
-poetry run molfidget --scale 10.0 --shaft-gap 0.2 pdb/ethanol.pdb
-```
+- `file_name` (required): PDB or MOL file to load
+- `--scale` (optional, default: 10.0): Molecule scale factor. The original model units are in Angstroms, so scale=1.0 would make the STL file extremely small. Use scale=10.0 or similar for printable STL files.
+- `--shaft-gap` (optional, default: 0.2): Shaft gap in mm. The gap between the movable shaft and hole. For normal 3D printers, 0.2~0.3 range should work fine.
+- `--output-dir` (optional, default: 'output'): STL files output directory
+- `--show-gui` (optional): Show GUI (requires display environment). Press 'q' key to exit preview.
 
-* プレビューは'q'キーで抜ける
-* 対応するstlファイルが直下に生成される
+### Output
 
-### その他
-
-* 元のモデルは単位がオングストロームになっているのでscale=1.0だとSTLファイルのモデルはすごく小さくなってしまう
-* なのでscale=10.0とかにするとプリント可能なSTLになる
-* 可動軸の軸と穴のギャップは `--shaft-gap`で指定する。単位はmmで、デフォルトは0.2になっている
-* 通常の3Dプリンタだとたぶん0.2~0.3ぐらいの間で問題ない
-
-### モデリング
-
-軸、穴部分の形状とパラメータの名前はこのようになっている。
-![モデリング図解](image/modeling-1.png)
+* Corresponding STL files will be generated in the specified output directory
+* Files include: molecule.stl, molecule.ply, individual atom STL files, and config.yaml
